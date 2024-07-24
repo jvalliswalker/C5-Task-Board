@@ -18,7 +18,14 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
-  console.log('hello!');
+
+  const taskData = {
+    taskTitle: $('#task-title').val(),
+    taskDueDate: $('#task-due-date').val(),
+    taskDescription: $('#task-description').val()
+  }
+
+  console.log(taskData);
 }
 
 // Todo: create a function to handle deleting a task
@@ -33,7 +40,6 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-  
 
   $('body').on('click', 'button[id="add-task"]', handleAddTask);
 
