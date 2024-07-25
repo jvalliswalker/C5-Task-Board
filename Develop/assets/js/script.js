@@ -21,7 +21,8 @@ function generateTaskId() {}
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-  console.log('hello');
+  cards.unshift(task);
+  localStorage.setItem('c5-task-cards', JSON.stringify(cards));
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -35,7 +36,7 @@ function handleAddTask() {
     taskDescription: $("#task-description").val(),
   };
 
-  console.log(taskData);
+  createTaskCard(taskData);
 }
 
 // Boostrap validation, original source: https://getbootstrap.com/docs/5.0/forms/validation/#custom-styles
