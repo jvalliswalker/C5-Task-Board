@@ -24,13 +24,12 @@ function handleAddTask() {
 
 // Boostrap validation, original source: https://getbootstrap.com/docs/5.0/forms/validation/#custom-styles
 function validateFormData(event) {
-  event.preventDefault();
+  event.preventDefault(); // Prevent default submission behavior
   this.classList.add("was-validated"); // Add bootstrap class turning on validation
 
-  if (this.checkValidity()) {
-    // Check to see if validity returns true
-    handleAddTask();
-    $("#form-modal").modal("hide");
+  if (this.checkValidity()) { // Check form validity
+    handleAddTask(); // Call task creation handler
+    $("#form-modal").modal("hide"); // Close bootstrap modal
   }
 }
 
@@ -40,9 +39,11 @@ function handleDeleteTask(event) {}
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {}
 
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-  // $("body").on("click", 'button[id="add-task"]', validateFormData);
+
+  // To Do: 
+  // Render task list
+  // Make lanes droppable
 
   // Identify the form using "needs-validation" class and apply validation as submission listener to each
   $(".needs-validation").each(function (i, obj) {
