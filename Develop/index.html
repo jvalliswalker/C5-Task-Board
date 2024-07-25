@@ -37,7 +37,7 @@
         <button
           class="btn btn-success"
           data-bs-toggle="modal"
-          data-bs-target="#formModal"
+          data-bs-target="#form-modal"
         >
           Add Task
         </button>
@@ -45,7 +45,7 @@
       <!-- modal -->
       <div
         class="modal fade"
-        id="formModal"
+        id="form-modal"
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLongTitle"
@@ -57,7 +57,7 @@
               <h5 class="modal-title">Add Task</h5>
             </div>
             <div class="modal-body">
-              <form class="needs-validation" novalidate>
+              <form class="needs-validation" id="create-task-form" novalidate>
                 <div class="form-group row">
                   <div class="col-6">
                     <label for="task-title">Task Title</label>
@@ -67,6 +67,9 @@
                       id="task-title"
                       required
                     />
+                    <div class="invalid-feedback">
+                      Please create a task title
+                    </div>
                   </div>
                   <div class="col-6">
                     <label for="task-due-date">Task Due Date</label>
@@ -75,6 +78,9 @@
                       id="task-due-date"
                       required
                     />
+                    <div class="invalid-feedback">
+                      Please select a task due date
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -84,18 +90,20 @@
                     id="task-description"
                     required
                   ></textarea>
+                  <div class="invalid-feedback">
+                    Please enter at least 5 characters
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    id="add-task"
+                  >
+                    Add Task
+                  </button>
                 </div>
               </form>
-            </div>
-            <div class="modal-footer justify-content-center">
-              <button
-                type="button"
-                class="btn btn-success"
-                data-bs-dismiss="modal"
-                id="add-task"
-              >
-                Add Task
-              </button>
             </div>
           </div>
         </div>
