@@ -67,8 +67,8 @@ $(document).ready(function () {
   getCardsFromStorage();
 
   // Identify the form using "needs-validation" class and apply validation as submission listener to each
-  $(".needs-validation").each(function (i, obj) {
-    $(obj).on('submit', validateFormData);
+  $(".needs-validation").each(function () {
+    $(this).on('submit', validateFormData);
   });
 
   // Create datepicker for task date
