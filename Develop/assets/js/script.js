@@ -19,7 +19,7 @@ function getCardsFromStorage(){
 // Todo: create a function to generate a unique task id
 function generateTaskId() {}
 
-// Todo: create a function to create a task card
+// Add card data to global cards list and save to local storage
 function createTaskCard(task) {
   cards.unshift(task);
   localStorage.setItem('c5-task-cards', JSON.stringify(cards));
@@ -30,12 +30,14 @@ function renderTaskList() {}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask() {
+  // Create task data from queried form elements
   const taskData = {
     taskTitle: $("#task-title").val(),
     taskDueDate: dayjs(Date($("#task-due-date").val())),
     taskDescription: $("#task-description").val(),
   };
 
+  // Call create task function
   createTaskCard(taskData);
 }
 
