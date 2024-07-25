@@ -1,12 +1,28 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
+const cards = [];
+
+function getCardsFromStorage(){
+
+  const storageRaw = localStorage.getItem('c5-task-cards');
+
+  if(storageRaw != null && storageRaw.startsWith('[')){
+    const taskCards = JSON.parse(storageRaw);
+
+    taskCards.forEach(card => {
+      createTaskCard(card);
+    })
+  }
+}
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {}
 
 // Todo: create a function to create a task card
-function createTaskCard(task) {}
+function createTaskCard(task) {
+  console.log('hello');
+}
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {}
@@ -42,8 +58,10 @@ function handleDrop(event, ui) {}
 $(document).ready(function () {
 
   // To Do: 
-  // Render task list
   // Make lanes droppable
+  
+  // Render task list
+  getCardsFromStorage();
 
   // Identify the form using "needs-validation" class and apply validation as submission listener to each
   $(".needs-validation").each(function (i, obj) {
