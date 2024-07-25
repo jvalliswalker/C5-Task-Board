@@ -57,18 +57,23 @@
               <h5 class="modal-title">Add Task</h5>
             </div>
             <div class="modal-body">
-              <form>
+              <form class="needs-validation" novalidate>
                 <div class="form-group row">
                   <div class="col-6">
                     <label for="task-title">Task Title</label>
-                    <input class="form-control" type="text" id="task-title" />
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="task-title"
+                      required
+                    />
                   </div>
                   <div class="col-6">
                     <label for="task-due-date">Task Due Date</label>
                     <input
                       class="form-control"
-                      type="date"
                       id="task-due-date"
+                      required
                     />
                   </div>
                 </div>
@@ -77,6 +82,7 @@
                   <textarea
                     class="form-control"
                     id="task-description"
+                    required
                   ></textarea>
                 </div>
               </form>

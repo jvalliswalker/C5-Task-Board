@@ -21,11 +21,17 @@ function handleAddTask(event){
 
   const taskData = {
     taskTitle: $('#task-title').val(),
-    taskDueDate: $('#task-due-date').val(),
+    taskDueDate: dayjs(Date($('#task-due-date').val())),
     taskDescription: $('#task-description').val()
   }
 
   console.log(taskData);
+}
+
+function validateFormData(){
+
+
+
 }
 
 // Todo: create a function to handle deleting a task
@@ -43,4 +49,8 @@ $(document).ready(function () {
 
   $('body').on('click', 'button[id="add-task"]', handleAddTask);
 
+  // Create datepicker for task date
+  $( function() {
+    $( "#task-due-date" ).datepicker();
+  } );
 });
