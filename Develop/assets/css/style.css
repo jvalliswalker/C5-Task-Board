@@ -50,3 +50,7 @@ body {
 .task-past-due h5 {
   background-color: rgb(230, 0, 0);
 }
+
+.hidden {
+  display: none;
+}

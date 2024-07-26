@@ -6,14 +6,18 @@ const cards = [];
 function getCardsFromStorage(){
 
   const storageRaw = localStorage.getItem('c5-task-cards');
-
+  console.log(storageRaw);
   if(storageRaw != null && storageRaw.startsWith('[')){
-    const taskCards = JSON.parse(storageRaw);
-
-    taskCards.forEach(card => {
-      createTaskCard(card);
-    })
+    JSON.parse(storageRaw).forEach(card => {
+      cards.push(card);
+    });
   }
+
+  renderTaskList(cards);
+}
+
+function storeCardData(){
+  localStorage.setItem('c5-task-cards', JSON.stringify(cards));
 }
 
 // Todo: create a function to generate a unique task id
@@ -22,7 +26,7 @@ function generateTaskId() {}
 // Add card data to global cards list and save to local storage
 function createTaskCard(task) {
   cards.unshift(task);
-  localStorage.setItem('c5-task-cards', JSON.stringify(cards));
+  storeCardData();
   renderTaskList([task]);
 }
 
@@ -73,14 +77,19 @@ function renderTaskList(taskCards) {
 
     // Create Delete button
     const deleteButton = $('<button>')
-    deleteButton.addClass('btn btn-danger');
+    deleteButton.addClass('btn btn-danger task-delete-button');
     deleteButton.text('Delete');
     cardElement.append(deleteButton);
 
+    // Append and hide identifier
+    const identifier = $('<div>');
+    identifier.addClass('hidden');
+    identifier.addClass('identifier');
+    identifier.text(card.identifier);
+    cardElement.append(identifier);
+
     // Append completed card to lane
     lane.append(cardElement);
-
-    // To do: create elements and add to appropriate lanes
   })
 
 }
@@ -94,8 +103,9 @@ function handleAddTask() {
   // Create task data from queried form elements
   const taskData = {
     taskTitle: $("#task-title").val(),
-    taskDueDate: $("#task-due-date").val(),
     taskDescription: $("#task-description").val(),
+    taskDueDate: $("#task-due-date").val(),
+    identifier: Math.random().toString(16).substring(2, 8),
     lane: 'todo-cards'
   };
 
@@ -115,7 +125,25 @@ function validateFormData(event) {
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event) {}
+function handleDeleteTask(event) {
+  const card = $(this).parent();
+
+  let cardElementIdentifier;
+  
+  card.children('identifier').each(function() {
+      cardElementIdentifier = $(this).text();
+  });
+
+  cards.forEach(card => {
+    if(card.identifier == cardElementIdentifier){
+      indexToRemove = cards.indexOf(card);
+      cards.splice(indexToRemove, 1);
+    }
+  })
+
+  storeCardData();
+  card.remove();
+}
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {}
@@ -127,6 +155,9 @@ $(document).ready(function () {
   
   // Render task list
   getCardsFromStorage();
+
+  // Add delete listeners to cards
+  $('.swim-lane').children('.task-card').children('.btn-danger').on('click', handleDeleteTask);
 
   // Identify the form using "needs-validation" class and apply validation as submission listener to each
   $(".needs-validation").each(function () {
