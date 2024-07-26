@@ -23,18 +23,74 @@ function generateTaskId() {}
 function createTaskCard(task) {
   cards.unshift(task);
   localStorage.setItem('c5-task-cards', JSON.stringify(cards));
+  renderTaskList([task]);
+}
+
+function getAlertLevel(dueDate){
+  const dateWrapper = dayjs(dueDate);
+  const dateDifference = dateWrapper.diff(dayjs(), 'd');
+
+  if (dateDifference < 0){
+      return 'task-past-due';
+  }
+  else if (dateDifference == 0){
+    return 'task-due-today';
+  }
+  else {
+    return '';
+  }
 }
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList() {}
+function renderTaskList(taskCards) {
+
+  taskCards.forEach( card => {
+    // Query lane in which to create card element
+    const lane = $(`#${card.lane}`)
+    
+    // Create card element and style
+    const cardElement = $('<div>');
+    cardElement.addClass('task-card');
+    cardElement.addClass(getAlertLevel(card.taskDueDate));
+    
+    // Create title element, style, populate, and add append to card
+    const title = $('<h5>')
+    title.addClass('p-2')
+    title.text(card.taskTitle);
+    cardElement.append(title);
+
+    // Create description element, style, populate, and append to card
+    const description = $('<div>');
+    description.addClass('p-2');
+    description.text(card.taskDescription);
+    cardElement.append(description);
+
+    // Create due date element, style, populate, and append to card
+    const dueDate = $('<div>');
+    dueDate.addClass('p-2');
+    dueDate.text(dayjs(card.taskDueDate).format('M/D/YYYY'));
+    cardElement.append(dueDate);
+
+    // Append completed card to lane
+    lane.append(cardElement);
+
+    // To do: create elements and add to appropriate lanes
+  })
+
+}
+
+function resetStorage(){
+  localStorage.setItem('c5-task-cards', '');
+}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask() {
   // Create task data from queried form elements
   const taskData = {
     taskTitle: $("#task-title").val(),
-    taskDueDate: dayjs(Date($("#task-due-date").val())),
+    taskDueDate: $("#task-due-date").val(),
     taskDescription: $("#task-description").val(),
+    lane: 'todo-cards'
   };
 
   // Call create task function
