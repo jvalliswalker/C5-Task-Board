@@ -71,6 +71,12 @@ function renderTaskList(taskCards) {
     dueDate.text(dayjs(card.taskDueDate).format('M/D/YYYY'));
     cardElement.append(dueDate);
 
+    // Create Delete button
+    const deleteButton = $('<button>')
+    deleteButton.addClass('btn btn-danger');
+    deleteButton.text('Delete');
+    cardElement.append(deleteButton);
+
     // Append completed card to lane
     lane.append(cardElement);
 

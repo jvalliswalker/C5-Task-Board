@@ -24,6 +24,11 @@ body {
   border-top-right-radius: var(--card-border-radius);
 }
 
+.task-card button {
+  margin-bottom: 5px;
+  border-color: white;
+}
+
 .task-card:hover {
   cursor: grab;
 }
