@@ -5,7 +5,7 @@ const cards = [];
 
 function getCardsFromStorage() {
   const storageRaw = localStorage.getItem("c5-task-cards");
-  console.log(storageRaw);
+
   if (storageRaw != null && storageRaw.startsWith("[")) {
     JSON.parse(storageRaw).forEach((card) => {
       cards.push(card);
@@ -122,12 +122,13 @@ function validateFormData(event) {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-  const card = $(this).parent();
+  const cardElement = $(this).parent();
 
   let cardElementIdentifier;
 
-  card.children("identifier").each(function () {
+  cardElement.children(".identifier").each(function () {
     cardElementIdentifier = $(this).text();
+    return;
   });
 
   cards.forEach((card) => {
@@ -138,7 +139,7 @@ function handleDeleteTask(event) {
   });
 
   storeCardData();
-  card.remove();
+  cardElement.remove();
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
