@@ -3,7 +3,7 @@ let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 const cards = [];
 
-function getCardsFromStorage() {
+function retrieveCardsFromStorage() {
   const storageRaw = localStorage.getItem("c5-task-cards");
 
   if (storageRaw != null && storageRaw.startsWith("[")) {
@@ -11,23 +11,30 @@ function getCardsFromStorage() {
       cards.push(card);
     });
   }
-
-  renderTaskList(cards);
 }
 
-function storeCardData() {
+function storeCardDateToLocalStorage() {
   localStorage.setItem("c5-task-cards", JSON.stringify(cards));
 }
 
 // Todo: create a function to generate a unique task id
-function generateTaskId() {}
-
-// Add card data to global cards list and save to local storage
-function createTaskCard(task) {
-  cards.unshift(task);
-  storeCardData();
-  renderTaskList([task]);
+function generateTaskId() {
+  let newTaskId = crypto.randomUUID();
+  let duplicateIdFound = false;
+  for(const card of cards){
+    if (card.identifier == newTaskId){
+      duplicateIdFound = true;
+    }
+  }
+  
+  if(duplicateIdFound){
+    return generateTaskId();
+  }
+  else{
+    return newTaskId;
+  }
 }
+
 
 function getAlertLevel(dueDate) {
   const dateWrapper = dayjs(dueDate);
@@ -43,8 +50,8 @@ function getAlertLevel(dueDate) {
 }
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList(taskCards) {
-  taskCards.forEach((card) => {
+function renderTaskList() {
+  cards.forEach((card) => {
     // Query lane in which to create card element
     const lane = $(`#${card.lane}`);
 
@@ -94,12 +101,13 @@ function handleAddTask() {
     taskTitle: $("#task-title").val(),
     taskDescription: $("#task-description").val(),
     taskDueDate: $("#task-due-date").val(),
-    identifier: crypto.randomUUID(),
+    identifier: generateTaskId(),
     lane: "cards-todo",
   };
 
-  // Call create task function
-  createTaskCard(taskData);
+  cards.unshift(taskData);
+  storeCardDateToLocalStorage();
+  renderTaskList();
 }
 
 // Boostrap validation, original source: https://getbootstrap.com/docs/5.0/forms/validation/#custom-styles
@@ -132,7 +140,7 @@ function handleDeleteTask(event) {
     }
   });
 
-  storeCardData();
+  storeCardDateToLocalStorage();
   cardElement.remove();
 }
 
@@ -152,9 +160,6 @@ $(document).ready(function () {
     }
   });
 
-  // Render task list
-  getCardsFromStorage();
-
   // Add delete listeners to cards
   $(".swim-lane")
     .children(".task-card")
@@ -171,4 +176,7 @@ $(document).ready(function () {
     $("#task-due-date").datepicker();
   });
 
+  // Render task list
+  retrieveCardsFromStorage();
+  renderTaskList();
 });
