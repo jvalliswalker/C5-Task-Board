@@ -21,20 +21,18 @@ function storeCardDateToLocalStorage() {
 function generateTaskId() {
   let newTaskId = crypto.randomUUID();
   let duplicateIdFound = false;
-  for(const card of cards){
-    if (card.identifier == newTaskId){
+  for (const card of cards) {
+    if (card.identifier == newTaskId) {
       duplicateIdFound = true;
     }
   }
-  
-  if(duplicateIdFound){
+
+  if (duplicateIdFound) {
     return generateTaskId();
-  }
-  else{
+  } else {
     return newTaskId;
   }
 }
-
 
 function getAlertLevel(dueDate) {
   const dateWrapper = dayjs(dueDate);
@@ -57,7 +55,7 @@ function renderTaskList() {
 
     // Create card element and style
     const cardElement = $("<div>");
-    cardElement.attr('data-uid', card.identifier);
+    cardElement.attr("data-uid", card.identifier);
     cardElement.addClass("task-card draggable");
     cardElement.addClass(getAlertLevel(card.taskDueDate));
 
@@ -153,11 +151,11 @@ $(document).ready(function () {
   $(".connected-lane").sortable({
     // zIndex: 100,
     connectWith: ".connected-lane",
-    receive: function(event, ui){
-      console.log($(event.target).attr('id'));
+    receive: function (event, ui) {
+      console.log($(event.target).attr("id"));
       // console.log(event);
-      console.log($(ui.item[0]).attr('data-uid'));
-    }
+      console.log($(ui.item[0]).attr("data-uid"));
+    },
   });
 
   // Add delete listeners to cards
