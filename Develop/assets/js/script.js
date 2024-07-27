@@ -50,7 +50,8 @@ function renderTaskList(taskCards) {
 
     // Create card element and style
     const cardElement = $("<div>");
-    cardElement.addClass("task-card");
+    cardElement.attr('data-uid', card.identifier);
+    cardElement.addClass("task-card draggable");
     cardElement.addClass(getAlertLevel(card.taskDueDate));
 
     // Create title element, style, populate, and add append to card
@@ -77,13 +78,6 @@ function renderTaskList(taskCards) {
     deleteButton.text("Delete");
     cardElement.append(deleteButton);
 
-    // Append and hide identifier
-    const identifier = $("<div>");
-    identifier.addClass("hidden");
-    identifier.addClass("identifier");
-    identifier.text(card.identifier);
-    cardElement.append(identifier);
-
     // Append completed card to lane
     lane.append(cardElement);
   });
@@ -100,8 +94,8 @@ function handleAddTask() {
     taskTitle: $("#task-title").val(),
     taskDescription: $("#task-description").val(),
     taskDueDate: $("#task-due-date").val(),
-    identifier: Math.random().toString(16).substring(2, 8),
-    lane: "todo-cards",
+    identifier: crypto.randomUUID(),
+    lane: "cards-todo",
   };
 
   // Call create task function
@@ -148,6 +142,15 @@ function handleDrop(event, ui) {}
 $(document).ready(function () {
   // To Do:
   // Make lanes droppable
+  $(".connected-lane").sortable({
+    // zIndex: 100,
+    connectWith: ".connected-lane",
+    receive: function(event, ui){
+      console.log($(event.target).attr('id'));
+      // console.log(event);
+      console.log($(ui.item[0]).attr('data-uid'));
+    }
+  });
 
   // Render task list
   getCardsFromStorage();
@@ -167,4 +170,5 @@ $(document).ready(function () {
   $(function () {
     $("#task-due-date").datepicker();
   });
+
 });
