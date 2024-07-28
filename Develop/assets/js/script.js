@@ -49,6 +49,11 @@ function getAlertLevel(dueDate) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+
+  // Clear all existing cards from UI
+  $('.task-card').remove();
+
+  // Loop through card data, create ui element for each
   cards.forEach((card) => {
     // Query lane in which to create card element
     const lane = $(`#${card.lane}`);
@@ -85,6 +90,23 @@ function renderTaskList() {
 
     // Append completed card to lane
     lane.append(cardElement);
+  });
+
+  // Make each card draggable
+  $(".draggable").draggable({ // Applys draggable jquery widget to all elements with class 'draggable' (aka newly created cards) 
+    opacity: 0.7, // Set's opacity of element while it is being dragged
+    zIndex: 1000, // Set's z index so element hovers in front of other elements on drag rather than behind them
+    // The helper below does two things
+    //   1) It creates a clone version of the dragged element, leaving the original in place until drop
+    //   2) It assures that the cloned version has the same width as the original, to avoid the clone's width shrinking
+    helper: function (e) { // The helper parameter takes a function for how to handle the dragged element
+      const original = $(e.target).hasClass("ui-draggable") // This checks to see if the dragged element is jquery draggable
+        ? $(e.target) // If it is, it returns the element itself
+        : $(e.target).closest(".ui-draggable"); // otherwise, it returns the closest element with the draggable class
+      return original.clone().css({ // This returns a clone of the original helper
+        width: original.outerWidth(), // and assigns the clone to have the same width as the original element
+      });
+    },
   });
 }
 
@@ -142,21 +164,32 @@ function handleDeleteTask(event) {
   cardElement.remove();
 }
 
+
 // Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {}
+function handleDrop(event, ui) {
+  event.stopPropagation(); // Prevent bubbling
+
+  const cardId = ui.draggable[0].dataset.uid; // From the UI element selected, get the element with .draggable 
+  const lane = $(event.target).children('.connected-lane')[0]; // Get the child of the dropped element with class 'connected-lane'
+  const laneId = $(lane).attr('id'); // Get the Id assigned to the lane the task was dropped in to
+
+  for (const card of cards) { // Iterate through exising cards
+    if (card.identifier == cardId) { // Find card matching dragged element's Id
+      card.lane = laneId; // Assign card's lane property to match dropped lane's Id
+    }
+  }
+
+  storeCardDateToLocalStorage(); // Store updated card data to local storage
+  renderTaskList(); // Re-render card data 
+}
 
 $(document).ready(function () {
-  // To Do:
-  // Make lanes droppable
-  $(".connected-lane").sortable({
-    // zIndex: 100,
-    connectWith: ".connected-lane",
-    receive: function (event, ui) {
-      console.log($(event.target).attr("id"));
-      // console.log(event);
-      console.log($(ui.item[0]).attr("data-uid"));
-    },
-  });
+
+  // Make lanes droppable via jquery widget
+    $(".lane").droppable({
+      accept: ".draggable",
+      drop: handleDrop, // pass custom handler on drop event
+    });
 
   // Add delete listeners to cards
   $(".swim-lane")
