@@ -4,6 +4,8 @@ In this assignment, we create a simple kanban style interface. Features include 
 ## Screenshot & Project Link
 ![Assignment Screenshot](./assets/images/Assignment_Screenshot.png "Assignment Screenshot")
 
+Site Link: https://jvalliswalker.github.io/C5-Task-Board/
+
 ## Code References
 Below are sources for code I referenced during this project.
 
