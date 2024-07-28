@@ -1,0 +1,54 @@
+:root {
+  --card-border-radius: 5px;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+}
+
+.swim-lanes {
+  min-height: 100vh;
+}
+
+.task-card {
+  background-color: rgb(112, 245, 255);
+  margin: 0 auto;
+  border-radius: var(--card-border-radius);
+  margin-bottom: 10px;
+}
+
+.task-card h5 {
+  background-color: rgb(89, 217, 226);
+  border-top-left-radius: var(--card-border-radius);
+  border-top-right-radius: var(--card-border-radius);
+}
+
+.task-card button {
+  margin-bottom: 5px;
+  border-color: white;
+}
+
+.task-card:hover {
+  cursor: grab;
+}
+
+.task-due-today {
+  background-color: yellow;
+}
+
+.task-due-today h5 {
+  background-color: rgb(232, 232, 0);
+}
+
+.task-past-due {
+  background-color: red;
+}
+
+.task-past-due h5 {
+  background-color: rgb(230, 0, 0);
+}
+
+.hidden {
+  display: none;
+}
