@@ -91,6 +91,9 @@ function renderTaskList() {
     lane.append(cardElement);
   });
 
+  // Add delete listeners to cards
+  $(".btn-danger").on("click", handleDeleteTask);
+
   // Make each card draggable
   $(".draggable").draggable({
     // Applys draggable jquery widget to all elements with class 'draggable' (aka newly created cards)
@@ -146,23 +149,20 @@ function validateFormData(event) {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-  const cardElement = $(this).parent();
+  const cardElement = $(this).parent()[0]; // Use .parent since button element is nested within card parent div
 
-  let cardElementIdentifier;
-
-  cardElement.children(".identifier").each(function () {
-    cardElementIdentifier = $(this).text();
-    return;
-  });
-
+  // Loop through cards in data
   cards.forEach((card) => {
-    if (card.identifier == cardElementIdentifier) {
+    if (card.identifier == cardElement.dataset.uid) {
+      // splice card from list on Id match
       indexToRemove = cards.indexOf(card);
       cards.splice(indexToRemove, 1);
     }
   });
 
+  // Update local storage
   storeCardDateToLocalStorage();
+  // Remove element from UI
   cardElement.remove();
 }
 
@@ -192,12 +192,6 @@ $(document).ready(function () {
     accept: ".draggable",
     drop: handleDrop, // pass custom handler on drop event
   });
-
-  // Add delete listeners to cards
-  $(".swim-lane")
-    .children(".task-card")
-    .children(".btn-danger")
-    .on("click", handleDeleteTask);
 
   // Identify the form using "needs-validation" class and apply validation as submission listener to each
   $(".needs-validation").each(function () {
