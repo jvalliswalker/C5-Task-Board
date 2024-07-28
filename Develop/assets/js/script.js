@@ -151,18 +151,15 @@ function validateFormData(event) {
 }
 
 // Reset form in modal
-function resetForm(){
-  const inputs = [
-    $('input').val(''),
-    $('textarea').val('')
-  ];
+function resetForm() {
+  const inputs = [$("input").val(""), $("textarea").val("")];
 
-  inputs.forEach(input => {
-    input.val('');
-  })
+  inputs.forEach((input) => {
+    input.val("");
+  });
 
-  $('.was-validated').each(function() {
-    this.classList.remove('was-validated');
+  $(".was-validated").each(function () {
+    this.classList.remove("was-validated");
   });
 }
 
@@ -222,7 +219,7 @@ $(document).ready(function () {
     $("#task-due-date").datepicker();
   });
 
-  $(window).on('hidden.bs.modal', resetForm);
+  $(window).on("hidden.bs.modal", resetForm);
 
   // Render task list
   retrieveCardsFromStorage();
