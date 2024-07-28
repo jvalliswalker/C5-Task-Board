@@ -144,7 +144,26 @@ function validateFormData(event) {
     // Check form validity
     handleAddTask(); // Call task creation handler
     $("#form-modal").modal("hide"); // Close bootstrap modal
+
+    // Reset modal form
+    resetForm();
   }
+}
+
+// Reset form in modal
+function resetForm(){
+  const inputs = [
+    $('input').val(''),
+    $('textarea').val('')
+  ];
+
+  inputs.forEach(input => {
+    input.val('');
+  })
+
+  $('.was-validated').each(function() {
+    this.classList.remove('was-validated');
+  });
 }
 
 // Todo: create a function to handle deleting a task
@@ -202,6 +221,8 @@ $(document).ready(function () {
   $(function () {
     $("#task-due-date").datepicker();
   });
+
+  $(window).on('hidden.bs.modal', resetForm);
 
   // Render task list
   retrieveCardsFromStorage();
