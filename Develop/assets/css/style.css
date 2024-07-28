@@ -8,7 +8,7 @@ body {
 }
 
 .swim-lanes {
-  min-height: 60vh;
+  min-height: 100vh;
 }
 
 .task-card {
